@@ -2,6 +2,9 @@ import pygame
 import os
 import time 
 import random
+from objects import Laser
+from objects import collide
+
 pygame.font.init()
 
 WIDTH, HEIGHT = 500, 500
@@ -19,25 +22,6 @@ GREEN_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_green.png"))
 YELLOW_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_yellow.png"))
 
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
-
-class Laser:
-    def __init__(self, x, y, img):
-        self.x = x
-        self.y = y
-        self.img = img
-        self.mask = pygame.mask.from_surface(self.img)
-
-    def draw(self, window):
-        window.blit(self.img, (self.x, self.y))
-    
-    def move(self, laser_vel):
-        self.y += laser_vel
-
-    def off_screen(self, height):
-        return self.y <= 0 or self.y >= height
-
-    def collision(self, obj):
-        return collide(obj, self)
 
 class Ship:
 
@@ -58,7 +42,6 @@ class Ship:
         return self.ship_img.get_height()
 
     def draw(self, window):
-        # pygame.draw.rect(window, (255, 0, 0), (self.x, self.y, 50, 50), 0)
         window.blit(self.ship_img, (self.x, self.y))
         for laser in self.lasers:
             laser.draw(window)
@@ -115,8 +98,8 @@ class Player(Ship):
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health/self.max_health), 10))
 
 
-
 class Enemy(Ship):
+
     COLOR_MAP = {
         "red": (RED_SPACESHIP, RED_LASER),
         "green": (GREEN_SPACESHIP, GREEN_LASER),
@@ -137,10 +120,6 @@ class Enemy(Ship):
             self.lasers.append(laser)
             self.cool_down_counter = 1
 
-def collide(obj1, obj2):
-    offset_x = obj2.x - obj1.x
-    offset_y = obj2.y - obj1.y
-    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 def main():
     run = True
@@ -187,11 +166,11 @@ def main():
         clock.tick(FPS)
         redraw_window()
 
-        if lives <=0 or player.health <=0 :
+        if lives <=0 or player.health <=0:
             lost = True
             lost_count += 1
 
-        if lost: 
+        if lost:
             if lost_count > FPS*5:
                 run = False
             else:
