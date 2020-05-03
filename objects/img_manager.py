@@ -1,4 +1,4 @@
-import pygame 
+import pygame
 from os.path import join
 
 RED_SPACESHIP = pygame.image.load(join("assets", "pixel_ship_red_small.png"))

@@ -3,6 +3,7 @@ from objects.ship import Ship
 from objects.laser import Laser
 from objects.img_manager import RED_SPACESHIP, RED_LASER, GREEN_SPACESHIP, GREEN_LASER, BLUE_SPACESHIP, BLUE_LASER
 
+
 class Enemy(Ship):
 
     COLOR_MAP = {
@@ -24,4 +25,3 @@ class Enemy(Ship):
             laser = Laser(self.x - 20, self.y, self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
-

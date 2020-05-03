@@ -1,9 +1,11 @@
 import pygame
 
+
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
-    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) is not None
+
 
 class Laser:
     def __init__(self, x, y, img):
@@ -14,7 +16,7 @@ class Laser:
 
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
-    
+
     def move(self, laser_vel):
         self.y += laser_vel
 
